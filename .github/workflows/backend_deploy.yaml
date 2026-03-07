@@ -29,6 +29,10 @@ jobs:
         with:
           version: 8
           run_install: false
+          
+      - name: Build frontend
+        if: secrets.USE_WORKER_ASSETS == 'true'
+        run: npm run build
 
       - name: Deploy Backend for ${{ github.ref_name }}
         run: |
@@ -46,6 +50,8 @@ jobs:
             fi
             cd ..
           fi
+          
+          
 
           export debug_mode=${{ secrets.DEBUG_MODE }}
           export use_mail_wasm_parser=${{ secrets.BACKEND_USE_MAIL_WASM_PARSER }}
@@ -74,3 +80,4 @@ jobs:
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          
