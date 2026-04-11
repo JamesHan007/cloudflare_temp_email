@@ -7,34 +7,16 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
 import wasm from "vite-plugin-wasm";
-import topLevelAwait from "vite-plugin-top-level-await";
-
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import topLevelAwait from 'vite-plugin-top-level-await'
-
-export default defineConfig({
-  plugins: [
-    vue(),
-    topLevelAwait({
-      target: 'es2022',  // 改为 es2022
-    }),
-  ],
-  build: {
-    target: 'es2022',  // 添加这个
-  },
-})
-
 
 // https://vitejs.dev/config/
 export default defineConfig({
   build: {
     outDir: './dist',
+    target: 'es2022',
   },
   plugins: [
     vue(),
     wasm(),
-    topLevelAwait(),
     AutoImport({
       imports: [
         'vue',
@@ -61,7 +43,6 @@ export default defineConfig({
         disableDevLogs: true,
         globPatterns: [],
         runtimeCaching: [],
-        navigateFallback: null,
         cleanupOutdatedCaches: true,
       },
       manifest: {
@@ -86,10 +67,5 @@ export default defineConfig({
   },
   define: {
     'import.meta.env.PACKAGE_VERSION': JSON.stringify(process.env.npm_package_version),
-  },
-  esbuild: {
-    supported: {
-      'top-level-await': true
-    },
   }
 })
